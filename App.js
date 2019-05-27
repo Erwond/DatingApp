@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Navigation from './src/screens/Navigation';
-import { Font } from 'expo';
+import { Font, AuthSession } from 'expo';
 
 
 class App extends Component {
@@ -9,6 +9,8 @@ class App extends Component {
   };
 
   async componentDidMount() {
+    console.log(AuthSession.getRedirectUrl());
+
     await Font.loadAsync({
       'ralewayBold': require('./assets/fonts/Raleway/Raleway-Bold.ttf'),
       'ralewayLight': require('./assets/fonts/Raleway/Raleway-Light.ttf'),
