@@ -11,7 +11,6 @@ class LoginScreen extends Component {
 
 
   render() {
-    const { navigation } = this.props;
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Spotify Dating</Text>
