@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, SectionList, Text } from 'react-native';
+import colors from 'assets/colors';
+import strings from 'assets/strings';
+import fonts from 'assets/fonts';
 
 class HomeScreen extends Component {
     constructor(props) {
@@ -41,7 +44,7 @@ class HomeScreen extends Component {
         return (
             <View style={styles.container}>
                 <Text style={[styles.title, styles.basicFont]}>{username}</Text>
-                <Text style={[styles.subtitle, styles.basicFont]}>Dein Musikprofil</Text>
+                <Text style={[styles.subtitle, styles.basicFont]}>{strings.home.title}</Text>
                 <SectionList
                     sections={userData}
                     renderItem={({ item }) => <Text style={[styles.listItem, styles.basicFont]}>- {item}</Text>}
@@ -56,30 +59,31 @@ class HomeScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#191414',
+        backgroundColor: colors.spotifyBlack,
         padding: 30,
     },
     basicFont: {
-        color: '#FFFFFF',
+        color: colors.white,
     },
     title: {
         fontSize: 40,
-        margin: 10,
-        fontFamily: 'ralewayMedium',
+        marginTop: 35,
+        marginBottom: 10,
+        fontFamily: fonts.title,
     },
     subtitle: {
         fontSize: 25,
         margin: 10,
-        fontFamily: 'ralewayRegular',
+        fontFamily: fonts.text,
     },
     categoryTitle: {
         fontSize: 22,
         margin: 10,
-        fontFamily: 'ralewayLight',
+        fontFamily: fonts.lightText,
     },
     listItem: {
         marginLeft: 10,
-        fontFamily: 'ralewayLight',
+        fontFamily: fonts.lightText,
         fontSize: 20,
     }
 });

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text } from 'react-native';
+import colors from 'assets/colors';
+import fonts from 'assets/fonts';
+import images from 'assets/images';
 
 class SpotifyButton extends Component {
     render() {
@@ -8,7 +11,7 @@ class SpotifyButton extends Component {
         return (
             <TouchableOpacity onPress={onPress}>
                 <View style={styles.loginButton}>
-                    <Text style={styles.loginButtonTxt}><Image source={require('../../assets/images/Spotify_Icon_RGB_White.png')} style={styles.spotifyIcon} />   {text}</Text>
+                    <Text style={styles.loginButtonTxt}><Image source={images.spotifyIconWhite} style={styles.spotifyIcon} />   {text}</Text>
                 </View>
             </TouchableOpacity>
         );
@@ -18,19 +21,18 @@ class SpotifyButton extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
     },
     loginButton: {
-        backgroundColor: '#1DB954',
+        backgroundColor: colors.spotifyGreen,
         borderRadius: 100,
         paddingHorizontal: 30,
         paddingVertical: 15,
         marginTop: 50,
     },
     loginButtonTxt: {
-        color: 'white',
-        fontFamily: 'ralewayMedium',
+        color: colors.white,
+        fontFamily: fonts.subtitle,
         fontSize: 17,
         textAlign: 'center',
     },
