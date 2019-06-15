@@ -9,3 +9,6 @@ __generated__
 
 # Secrets
 secrets.js
+
+# VS Code
+.vscode/

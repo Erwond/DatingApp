@@ -1,26 +1,29 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, AsyncStorage } from 'react-native';
-import SpotifyButton from '../components/SpotifyButton';
+import { StyleSheet, View, Text } from 'react-native';
+import SpotifyButton from 'library/components/SpotifyButton';
 import { AuthSession } from 'expo';
-import { spotifyCredentials } from '../auth/secrets';
+import { spotifyCredentials } from 'library/networking/auth/secrets';
 import { encode as btoa } from 'base-64';
+import colors from 'assets/colors';
+import strings from 'assets/strings';
+import fonts from 'assets/fonts';
+import { saveAccessToken, getAccessToken, saveRefreshToken, saveExpirationTime } from 'library/networking/auth/asyncStorage';
 
 class LoginScreen extends Component {
   state = {
     result: null,
   };
 
-
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Spotify Dating</Text>
-        <Text style={styles.welcomeTxt}>Welcome to Spotify Dating. Please Log-In with your Spotify Account. Test</Text>
-        <Text style={styles.welcomeTxt}>You will need a Spotify Account in order to get started.</Text>
+        <Text style={styles.title}>{strings.login.title}</Text>
+        <Text style={styles.welcomeTxt}>{strings.login.welcome}</Text>
+        <Text style={styles.welcomeTxt}>{strings.login.instruction}</Text>
         {this.state.result ? (
           <Text>{JSON.stringify(this.state.result)}</Text>
         ) : null}
-        < SpotifyButton style={styles.loginButton} text="LOGIN WITH SPOTIFY" onPress={getTokens} />
+        < SpotifyButton style={styles.loginButton} text={strings.login.button} onPress={getTokens} />
       </View>
     );
   }
@@ -29,82 +32,6 @@ class LoginScreen extends Component {
 const scopesArr = ['user-read-currently-playing', 'user-library-read', 'playlist-read-private',
   'playlist-read-collaborative', 'user-read-recently-played', 'user-top-read', 'user-follow-read'];
 const scopes = scopesArr.join(' ');
-
-const getAuthorizationCode = async () => {
-  try {
-    const credentials = spotifyCredentials;
-    const redirectUrl = AuthSession.getRedirectUrl();
-    const result = await AuthSession.startAsync({
-      authUrl:
-        'https://accounts.spotify.com/authorize' +
-        '?response_type=code' +
-        '&client_id=' +
-        credentials.clientId +
-        (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
-        '&redirect_uri=' +
-        encodeURIComponent(redirectUrl),
-    });
-    return result.params.code;
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-// Async Storage
-const saveAccessToken = async accessToken => {
-  try {
-    await AsyncStorage.setItem('accessToken', accessToken);
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
-const getAccessToken = async () => {
-  let accessToken = '';
-  try {
-    accessToken = await AsyncStorage.getItem('accessToken') || 'none';
-  } catch (error) {
-    console.log(error.message);
-  }
-  return accessToken;
-}
-
-const saveRefreshToken = async refreshToken => {
-  try {
-    await AsyncStorage.setItem('refreshToken', refreshToken);
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
-const getRefreshToken = async () => {
-  let refreshToken = '';
-  try {
-    refreshToken = await AsyncStorage.getItem('refreshToken') || 'none';
-  } catch (error) {
-    console.log(error.message);
-  }
-  return refreshToken;
-}
-
-const saveExpirationTime = async expirationTime => {
-  try {
-    await AsyncStorage.setItem('expirationTime', "" + expirationTime);
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
-const getExpirationTime = async () => {
-  try {
-    let expiration = '';
-    expiration = await AsyncStorage.getItem('expirationTime') || 'none';
-  } catch (error) {
-    console.log(error.message);
-  }
-  return expiration;
-}
-
 
 // Get Tokens
 const getTokens = async () => {
@@ -140,25 +67,46 @@ const getTokens = async () => {
   }
 }
 
+// Get Auth Code
+const getAuthorizationCode = async () => {
+  try {
+    const credentials = spotifyCredentials;
+    const redirectUrl = AuthSession.getRedirectUrl();
+    const result = await AuthSession.startAsync({
+      authUrl:
+        'https://accounts.spotify.com/authorize' +
+        '?response_type=code' +
+        '&client_id=' +
+        credentials.clientId +
+        (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
+        '&redirect_uri=' +
+        encodeURIComponent(redirectUrl),
+    });
+    return result.params.code;
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#191414',
+    backgroundColor: colors.spotifyBlack,
     alignItems: 'center',
   },
   title: {
     fontSize: 50,
     marginTop: 100,
-    fontFamily: 'ralewayBold',
-    color: '#ffffff',
+    fontFamily: fonts.title,
+    color: colors.white,
   },
   welcomeTxt: {
     fontSize: 25,
     marginTop: 60,
     paddingHorizontal: 50,
     textAlign: 'center',
-    fontFamily: 'ralewayLight',
-    color: '#ffffff',
+    fontFamily: fonts.lightText,
+    color: colors.white,
   },
   loginButton: {
     marginTop: 80,
